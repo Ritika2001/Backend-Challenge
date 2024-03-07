@@ -1,0 +1,113 @@
+{
+  "Sedan": [
+    {
+      "id": 1,
+      "policyId": "1234567890",
+      "company": "ABC Insurance",
+      "premium": 500,
+      "coverage": "Basic"
+    },
+    {
+      "id": 2,
+      "policyId": "2345678901",
+      "company": "XYZ Insurance",
+      "premium": 600,
+      "coverage": "Standard"
+    },
+    {
+      "id": 3,
+      "policyId": "3456789012",
+      "company": "123 Insurance",
+      "premium": 700,
+      "coverage": "Premium"
+    },
+    {
+      "id": 4,
+      "policyId": "4567890123",
+      "company": "ABC Insurance",
+      "premium": 550,
+      "coverage": "Basic"
+    },
+    {
+      "id": 5,
+      "policyId": "5678901234",
+      "company": "XYZ Insurance",
+      "premium": 650,
+      "coverage": "Standard"
+    }
+  ],
+  "SUV": [
+    {
+      "id": 6,
+      "policyId": "6789012345",
+      "company": "123 Insurance",
+      "premium": 750,
+      "coverage": "Premium"
+    },
+    {
+      "id": 7,
+      "policyId": "7890123456",
+      "company": "ABC Insurance",
+      "premium": 450,
+      "coverage": "Basic"
+    },
+    {
+      "id": 8,
+      "policyId": "8901234567",
+      "company": "XYZ Insurance",
+      "premium": 550,
+      "coverage": "Standard"
+    },
+    {
+      "id": 9,
+      "policyId": "9012345678",
+      "company": "123 Insurance",
+      "premium": 650,
+      "coverage": "Premium"
+    },
+    {
+      "id": 10,
+      "policyId": "0123456789",
+      "company": "ABC Insurance",
+      "premium": 550,
+      "coverage": "Basic"
+    }
+  ],
+  "Hatchback": [
+    {
+      "id": 11,
+      "policyId": "2345678901",
+      "company": "XYZ Insurance",
+      "premium": 550,
+      "coverage": "Standard"
+    },
+    {
+      "id": 12,
+      "policyId": "3456789012",
+      "company": "123 Insurance",
+      "premium": 650,
+      "coverage": "Premium"
+    },
+    {
+      "id": 13,
+      "policyId": "4567890123",
+      "company": "ABC Insurance",
+      "premium": 500,
+      "coverage": "Basic"
+    },
+    {
+      "id": 14,
+      "policyId": "5678901234",
+      "company": "XYZ Insurance",
+      "premium": 600,
+      "coverage": "Standard"
+    },
+    {
+      "id": 15,
+      "policyId": "6789012345",
+      "company": "123 Insurance",
+      "premium": 700,
+      "coverage": "Premium"
+    }
+  ]
+}

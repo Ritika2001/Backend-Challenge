@@ -1,62 +1,53 @@
-// // import { Request, Response } from 'express';
-// import { User } from '../entities/user.entity';
+import { Request, Response } from 'express';
+import { myDataSource } from "../app-data-source"
+import { Users } from '../entities/user.entity';
+import { Cars } from '../entities/car.entity';
+import { Quotes } from '../entities/quotes.entity';
 
-// import express, { Request, Response } from 'express';
-// import { getRepository } from 'typeorm';
-// // import { User } from '../entities/User';
+const userRepository = myDataSource.getRepository(Users);
+const carRepository = myDataSource.getRepository(Cars);
+const quotesRepository = myDataSource.getRepository(Quotes);
 
-// const router = express.Router();
+export const getBestThreeQuotes = async (req: Request, res: Response) => {
+  try{
+    const email = req.query.email as string;
+    const vin = req.query.vin as string;
+    console.log(req.query);
 
-// export class UserController {
-//   static async fetchQuotes(req: Request, res: Response) {
-//     try {
-//         router.post('/register_user', async (req: Request, res: Response) => {
-//             const userRepository = getRepository(User);
-//             const { email, password } = req.body;
-          
-//             const existingUser = await userRepository.findOne({ where: { email } });
-//             if (existingUser) {
-//               return res.status(400).json({ message: 'User already exists' });
-//             }
-          
-//             const newUser = userRepository.create({ email, password });
-//             await userRepository.save(newUser);
-          
-//             res.json({ message: 'User registered successfully' });
-//           });// Logic to fetch quotes based on user input
-//       // Assuming user input is passed in the request body
-//       const { name, age, carModel, yearsOfDrivingExperience } = req.body;
-      
-//       // Mocked quotes for demonstration
-//       const quotes = [
-//         { id: 1, insurance_provider: 'Provider A', price: 1000 },
-//         { id: 2, insurance_provider: 'Provider B', price: 1200 },
-//         { id: 3, insurance_provider: 'Provider C', price: 950 },
-//         { id: 4, insurance_provider: 'Provider D', price: 1100 }
-//       ];
-
-//       res.json({ quotes });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   }
-
-//   static async getBestThreeQuotes(req: Request, res: Response) {
-//     try {
-//       // Logic to fetch and return the best three quotes
-//       const quotes = [
-//         { id: 1, insurance_provider: 'Provider A', price: 1000 },
-//         { id: 2, insurance_provider: 'Provider B', price: 1200 },
-//         { id: 3, insurance_provider: 'Provider C', price: 950 },
-//         { id: 4, insurance_provider: 'Provider D', price: 1100 }
-//       ];
-
-//       const bestThreeQuotes = quotes.slice(0, 3);
-//       res.json({ bestThreeQuotes });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   }
-// }
+    try{
+        console.log("Here");
+        const currentUser = await userRepository.findOne({ where: { email } });
+        console.log(currentUser);
+        // const currentUser = await userRepository.createQueryBuilder("user")
+        // .leftJoinAndSelect("user.cars", "car")
+        // .where("user.email = :email", { email: email })
+        // .andWhere("car.vin = :vin", { vin: vin })
+        // .getOne();
+        // console.log(currentUser);
+    
+          if (!currentUser) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+    
+        //   const userCar = currentUser.cars[0];
+        //   if (!userCar) {
+        //     return res.status(404).json({ message: 'User does not own a car' });
+        //   }
+    
+        //   const carQuotes = await quotesRepository.createQueryBuilder('quotes')
+        //   .select(['quotes.id', 'quotes.policyId', 'quotes.company', 'quotes.premium', 'quotes.coverage'])
+        //   .innerJoin('quotes.cars', 'cars')
+        //   .where('cars.carId = :carId', { carId: userCar.carId })
+        //     .orderBy('quotes.premium', 'ASC')
+        //     .limit(3)
+        //     .getMany();
+    
+        //   return res.status(200).json(carQuotes);
+      } catch (error) {
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+  }
+  catch (error) {
+    return res.status(500).json({ message: 'No parameters in request' });
+  }
+};

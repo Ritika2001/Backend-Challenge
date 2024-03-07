@@ -1,43 +1,94 @@
-// import { Request, Response } from 'express';
-// import { User } from '../entities/user.entity';
+import { Request, Response } from 'express';
+import { myDataSource } from "../app-data-source"
+import { Users } from '../entities/user.entity';
+import { Cars } from '../entities/car.entity';
+import { Quotes } from '../entities/quotes.entity';
 
-// export class QuoteController {
-//   static async fetchQuotes(req: Request, res: Response) {
-//     try {
-//       // Logic to fetch quotes based on user input
-//       // Assuming user input is passed in the request body
-//       const { name, age, carModel, yearsOfDrivingExperience } = req.body;
-      
-//       // Mocked quotes for demonstration
-//       const quotes = [
-//         { id: 1, insurance_provider: 'Provider A', price: 1000 },
-//         { id: 2, insurance_provider: 'Provider B', price: 1200 },
-//         { id: 3, insurance_provider: 'Provider C', price: 950 },
-//         { id: 4, insurance_provider: 'Provider D', price: 1100 }
-//       ];
+const userRepository = myDataSource.getRepository(Users);
+const carRepository = myDataSource.getRepository(Cars);
+const quotesRepository = myDataSource.getRepository(Quotes);
 
-//       res.json({ quotes });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   }
+export const createQuote = async (req: Request, res: Response) => {
+  const { email, firstName, lastName, dob, driveStartDate, carModel, carType, vin} = req.body;
+  const existingUser = await userRepository.findOne({ where: { email } });
+    if (!existingUser) {
+      const newUser = new Users();
+      newUser.email = email;
+      newUser.firstName = firstName;
+      newUser.lastName = lastName;
+      newUser.dob = dob;
+      newUser.driveStartDate = driveStartDate;
 
-//   static async getBestThreeQuotes(req: Request, res: Response) {
-//     try {
-//       // Logic to fetch and return the best three quotes
-//       const quotes = [
-//         { id: 1, insurance_provider: 'Provider A', price: 1000 },
-//         { id: 2, insurance_provider: 'Provider B', price: 1200 },
-//         { id: 3, insurance_provider: 'Provider C', price: 950 },
-//         { id: 4, insurance_provider: 'Provider D', price: 1100 }
-//       ];
+      try {
+        await userRepository.save(newUser);
+      } catch (error) {
+        return res.status(500).json({ message: 'Enter all user details' });
+      }
+    }
+    else {
+      console.log("User already exists")
+    }
 
-//       const bestThreeQuotes = quotes.slice(0, 3);
-//       res.json({ bestThreeQuotes });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   }
-// }
+    const currentUser = await userRepository.findOne({ where: { email } });
+
+    const existingCar = await carRepository.findOne({ where: { vin } });
+
+    if (existingCar) {
+        console.log("Car already exists")
+    }
+    else {
+      const newCar = new Cars()
+      newCar.carModel = carModel
+      newCar.carType = carType
+      newCar.vin = vin
+      newCar.user = currentUser
+
+      try {
+        await carRepository.save(newCar);
+      } catch (error) {
+        console.error('Error saving car:', error);
+      }
+
+    }
+    const currentCar = await carRepository.findOne({ where: { vin } });
+    
+    try {
+      const quotesResponse = await fetch(`http://localhost:3001/${carType}`);
+      const quotes = await quotesResponse.json();
+    
+      for (const quote of quotes) {
+        // Check if the quote with the same policy ID already exists
+        const existingQuote = await quotesRepository.findOne({ where: { policyId: quote.policyId }, relations: ['cars'] });
+
+        
+        if (!existingQuote) {
+          const newQuote = new Quotes();
+          newQuote.policyId = quote.policyId;
+          newQuote.company = quote.company;
+          newQuote.premium = quote.premium;
+          newQuote.coverage = quote.coverage;
+          newQuote.cars = [currentCar];
+          
+          try {
+            await quotesRepository.save(newQuote);
+          } catch (error) {
+            console.error('Error saving Quote:', error);
+          }
+        } else {
+          console.log(existingQuote);
+          existingQuote.cars.push(currentCar);
+          try {
+            await quotesRepository.save(existingQuote);
+          } catch (error) {
+            console.error('Error saving Quote:', error);
+          }
+        }
+      }
+    
+      return res.status(200).json({ message: 'Quotes saved successfully' });
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+

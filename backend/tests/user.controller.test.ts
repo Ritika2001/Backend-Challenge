@@ -1,8 +1,7 @@
-import { getBestThreeQuotes } from "../src/controllers/user.controller"; // Update with your actual controller file path
-import { createQuote } from "../src/controllers/quote.controller"; // Update with your actual controller file path
+import { getBestThreeQuotes } from "../src/controllers/user.controller"; 
+import { createQuote } from "../src/controllers/quote.controller"; 
 import { Request, Response } from 'express';
 import { myDataSource } from "../src/app-data-source";
-import { DataSource } from "typeorm";
 import { Users } from '../src/entities/user.entity';
 import { Cars } from '../src/entities/car.entity';
 import { Quotes } from '../src/entities/quotes.entity';

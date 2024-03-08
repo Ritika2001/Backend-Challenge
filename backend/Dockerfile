@@ -1,4 +1,4 @@
-# Use the official Node.js 14 image
+# Use the latest official Node.js image
 FROM node:latest
 
 # Set the working directory in the container
@@ -18,6 +18,5 @@ EXPOSE 3000
 EXPOSE 3001
  
 # Start the application
-# CMD if [ "$NODE_ENV" = "test" ]; then npx json-server --watch db.json --port 3001 & npm test; else npm run start & npx json-server --watch db.json --port 3001; fi
 CMD npm run start & npx json-server --watch db.json --port 3001
 

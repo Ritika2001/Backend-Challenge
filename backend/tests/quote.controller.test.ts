@@ -1,7 +1,6 @@
-import { createQuote } from "../src/controllers/quote.controller"; // Update with your actual controller file path
+import { createQuote } from "../src/controllers/quote.controller"; 
 import { Request, Response } from 'express';
 
-// Mock the necessary dependencies
 jest.mock('../src/app-data-source', () => ({
   myDataSource: {
     getRepository: jest.fn(() => ({

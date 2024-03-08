@@ -75,7 +75,6 @@ export const createQuote = async (req: Request, res: Response) => {
             console.error('Error saving Quote:', error);
           }
         } else {
-          console.log(existingQuote);
           existingQuote.cars.push(currentCar);
           try {
             await quotesRepository.save(existingQuote);

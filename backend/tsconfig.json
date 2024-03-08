@@ -9,6 +9,7 @@
       "experimentalDecorators": true,
       "strictPropertyInitialization": false,
     },
+    "include": ["src", "public"],
     "lib": ["es2015"],
     "jest": {
       "preset": "ts-jest",

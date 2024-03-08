@@ -4,9 +4,8 @@ import { Cars } from "./entities/car.entity";
 import { Quotes } from "./entities/quotes.entity";
 
 const myDataSource = new DataSource({
-    name: "default",
     type: "postgres",
-    host: "localhost",
+    host: "postgres",
     port: 5432,
     username: "postgres",
     password: "postgres",
